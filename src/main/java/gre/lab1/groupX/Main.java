@@ -1,11 +1,16 @@
 package gre.lab1.groupX;
 
+import gre.lab1.graph.*;
+
 import java.io.IOException;
 
 public class Main {
   public static void main(String[] args) throws IOException {
     // Lecture d'un graphe orienté depuis un fichier
-    // DirectedGraph graph = DirectedGraphReader.fromFile("data/file.txt");
+     DirectedGraph graph = DirectedGraphReader.fromFile("data/chaine1.txt");
+
+    TarjanAlgorithm tarjan = new TarjanAlgorithm();
+    GraphScc scc = tarjan.compute(graph);
 
     // TODO
     //  - Renommage du package ;
