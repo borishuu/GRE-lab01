@@ -5,38 +5,38 @@ import gre.lab1.graph.GenericAlgorithm;
 import gre.lab1.graph.GraphCondensation;
 import gre.lab1.graph.GraphScc;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 public class ContractionAlgorithm implements GenericAlgorithm<GraphCondensation> {
-
-  private List<List<Integer>> initializeVerticiesMapping(int count) {
-    List<List<Integer>> verticiesMapping = new ArrayList<>();
-    for (int i = 0; i < count; ++i) {
-      verticiesMapping.add(new ArrayList<>());
-    }
-    return verticiesMapping;
-  }
-
   @Override
   public GraphCondensation compute(DirectedGraph graph) {
+
+    //Transformation du graphe en graphe scc
     TarjanAlgorithm tarjan = new TarjanAlgorithm();
-    GraphScc tarjanResult = tarjan.compute(graph);
+    GraphScc scc = tarjan.compute(graph);
 
-    List<List<Integer>> verticiesMapping = initializeVerticiesMapping(tarjanResult.count());
-    DirectedGraph condesation = new DirectedGraph(graph.getNVertices());
-    Set<Integer> indexesFortementConnexe = new HashSet<>();
+    //Création du graphe de condensation
+    DirectedGraph condensation = new DirectedGraph(scc.count());
 
-    for (int sommet = 0; sommet < tarjanResult.components().length; ++sommet) {
-      int composanteFortmentConnexe = tarjanResult.components()[sommet];
-      if (indexesFortementConnexe.contains(composanteFortmentConnexe)) {
-        verticiesMapping.get(composanteFortmentConnexe).add(sommet);
+    //Ajout des arcs dans le graphe de condensation
+    for (int i = 0; i < graph.getNVertices(); i++) {
+      for (int j : graph.getSuccessorList(i)) {
+        if (scc.componentOf(i) != scc.componentOf(j)) {
+          if (!condensation.getSuccessorList(scc.componentOf(i) - 1).contains(scc.componentOf(j) - 1))
+            condensation.addEdge(scc.componentOf(i) - 1, scc.componentOf(j) - 1 );
+        }
       }
     }
 
-    GraphCondensation resultingGraph = new GraphCondensation(graph, condesation, verticiesMapping);
-    return null;
+    //Création du mapping
+    java.util.List<java.util.List<Integer>> mapping = new java.util.ArrayList<>();
+    for (int i = 0; i < scc.count(); i++) {
+      mapping.add(new java.util.ArrayList<>());
+    }
+
+    for (int i = 0; i < graph.getNVertices(); i++) {
+      mapping.get(scc.componentOf(i) - 1).add(i);
+    }
+
+
+    return new GraphCondensation(graph, condensation, mapping);
   }
 }
