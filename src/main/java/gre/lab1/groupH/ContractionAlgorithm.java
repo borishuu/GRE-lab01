@@ -1,4 +1,4 @@
-package gre.lab1.groupX;
+package gre.lab1.groupH;
 
 import gre.lab1.graph.DirectedGraph;
 import gre.lab1.graph.GenericAlgorithm;
