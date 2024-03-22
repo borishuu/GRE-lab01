@@ -9,8 +9,7 @@ public class Main {
     // Lecture d'un graphe orienté depuis un fichier
      DirectedGraph graph = DirectedGraphReader.fromFile("data/chaine1.txt");
 
-    TarjanAlgorithm tarjan = new TarjanAlgorithm();
-    GraphScc scc = tarjan.compute(graph);
+
 
     // TODO
     //  - Renommage du package ;
