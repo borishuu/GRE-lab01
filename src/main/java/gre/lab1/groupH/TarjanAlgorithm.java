@@ -101,9 +101,9 @@ public final class TarjanAlgorithm implements SccAlgorithm {
         for (int vertexSuccessor : dataContainer.graph.getSuccessorList(vertex)) {
             if (dataContainer.dfsNum[vertexSuccessor] == 0) {
                 scc(dataContainer, vertexSuccessor);
-
-                // Updates the vertex' low value if its successor hasn't been added to a strongly connected component
-            } else if (dataContainer.tabScc[vertexSuccessor] == 0) {
+            }
+            // Updates the vertex' low value if its successor hasn't been added to a strongly connected component
+            if (dataContainer.tabScc[vertexSuccessor] == 0) {
                 dataContainer.low[vertex] = Math.min(dataContainer.low[vertex], dataContainer.low[vertexSuccessor]);
             }
         }
